@@ -14,12 +14,14 @@ public class AlureStream {
 
     private static void free_resources() {
         if (AL.is_source(src)) {
+            Alure.stop_source(src, false);
+
+            if (stream != null) {
+                stream.destroy();
+                stream = null;
+            }
+
             AL.delete_source(1, out src);
-        }
-        
-        if (stream != null) {
-            stream.destroy();
-            stream = null;
         }
 
         Alure.shutdown_device();
@@ -35,14 +37,14 @@ public class AlureStream {
             stderr.printf("Failed to open OpenAL device: %s\n", Alure.get_error_string());
             return 1;
         }
-        
+
         AL.gen_source(1, out src);
         if (AL.get_error() != AL.Error.NO_ERROR) {
             stderr.printf("Failed to create OpenAL source!\n");
             Alure.shutdown_device();
             return 1;
         }
-        
+
         Alure.stream_size_is_microsec(true);
 
         stream = new Alure.Stream.from_file(args[1], CHUNK_LENGTH);

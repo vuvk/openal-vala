@@ -13,7 +13,7 @@ public class AlurePlay {
         if (AL.is_source(src)) {
             AL.delete_source(1, out src);
         }
-        
+
         if (AL.is_buffer(buf)) {
             AL.delete_buffer(1, out buf);
         }
@@ -31,7 +31,7 @@ public class AlurePlay {
             stderr.printf("Failed to open OpenAL device: %s\n", Alure.get_error_string());
             return 1;
         }
-        
+
         AL.gen_source(1, out src);
         if (AL.get_error() != AL.Error.NO_ERROR) {
             stderr.printf("Failed to create OpenAL source!\n");
