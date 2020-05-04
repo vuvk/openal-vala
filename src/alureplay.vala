@@ -11,11 +11,11 @@ public class AlurePlay {
 
     private static void free_resources() {
         if (AL.is_source(src)) {
-            AL.delete_source(1, out src);
+            AL.delete_source(1, ref src);
         }
 
         if (AL.is_buffer(buf)) {
-            AL.delete_buffer(1, out buf);
+            AL.delete_buffer(1, ref buf);
         }
 
         Alure.shutdown_device();

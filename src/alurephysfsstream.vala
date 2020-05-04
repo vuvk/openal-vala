@@ -85,7 +85,7 @@ public class AlurePhysfsStream {
                 stream = null;
             }
 
-            AL.delete_source(1, out src);
+            AL.delete_source(1, ref src);
         }
 
         Alure.shutdown_device();
