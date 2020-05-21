@@ -402,4 +402,4 @@ namespace Sndfile {
   [CCode (cname = "SF_BROADCAST_INFO_VAR", cprefix = "", destroy_function = "", has_copy_function=false)]
   public struct BroadcatInfoVar { }
 
-}}}
+}
