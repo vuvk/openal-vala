@@ -250,7 +250,7 @@ namespace Sndfile {
     public File.fd(int fd, Mode mode, ref Info info, int close_desc);
 
     [CCode (cname = "sf_open_virtual")]
-    public File.virtual(VirtualIO virtual, Mode mode, ref Info info);
+    public File.virtual(VirtualIO virtual, Mode mode, ref Info info, void* user_data);
 
     //public const LPCWSTR;
     //[CCode (cname = "sf_wchar_open")]
@@ -379,31 +379,27 @@ namespace Sndfile {
   }
 
 
+  [CCode (has_target = false)]
+  public delegate count_t GetFilelen(void* user_data);
+  [CCode (has_target = false)]
+  public delegate count_t Seek(count_t offset, int whence, void* user_data);
+  [CCode (has_target = false)]
+  public delegate count_t Read(void *ptr, count_t count, void* user_data);
+  [CCode (has_target = false)]
+  public delegate count_t Write(void *ptr, count_t count, void* user_data);
+  [CCode (has_target = false)]
+  public delegate count_t Tell(void* user_data);
 
-  [Compact]
-  [CCode (cname = "SF_VIRTUAL_IO", cprefix = "", free_function = "")]
-  public class VirtualIO {
-
-    [CCode (cname = "sf_vio_get_filelen")]
-    public delegate count_t GetFilelen() ;
-    [CCode (cname = "sf_vio_seek")]
-    public delegate count_t Seek(count_t offset, int whence) ;
-    [CCode (cname = "sf_vio_read")]
-    public delegate count_t  Read(void *ptr, count_t count) ;
-    [CCode (cname = "sf_vio_write")]
-    public delegate count_t Write (void *ptr, count_t count) ;
-    [CCode (cname = "sf_vio_tell")]
-    public delegate count_t Tell () ;
-
-    GetFilelen   get_filelen ;
-    Seek         seek ;
-    Read         read ;
-    Write        write ;
-    Tell         tell ;
-
-  } 
+  [CCode (cname = "SF_VIRTUAL_IO", cprefix = "sf_vio_", has_type_id = false)]
+  public struct VirtualIO {
+    public GetFilelen   get_filelen;
+    public Seek         seek;
+    public Read         read;
+    public Write        write;
+    public Tell         tell;
+  }
 
   [CCode (cname = "SF_BROADCAST_INFO_VAR", cprefix = "", destroy_function = "", has_copy_function=false)]
   public struct BroadcatInfoVar { }
 
-}
+}}}
