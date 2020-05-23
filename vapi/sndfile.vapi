@@ -1,4 +1,4 @@
-/* 
+/*
   Copyright (C) 2012 Davorin Šego
 
   Permission is hereby granted, free of charge, to any person obtaining a copy of
@@ -22,7 +22,7 @@
 
 [CCode (cheader_filename = "sndfile.h", cprefix="")]
 namespace Sndfile {
-  
+
   [CCode (cprefix = "SF_FORMAT_")]
   public enum Format {
     WAV,
@@ -61,17 +61,17 @@ namespace Sndfile {
     ALAW,
     IMA_ADPCM,
     MS_ADPCM,
-    GSM610,   
-    VOX_ADPCM, 
-    G721_32,  
-    G723_24,  
-    G723_40,  
-    DWVW_12,  
-    DWVW_16,  
-    DWVW_24,  
-    DWVW_N,  
-    DPCM_8,   
-    DPCM_16,  
+    GSM610,
+    VOX_ADPCM,
+    G721_32,
+    G723_24,
+    G723_40,
+    DWVW_12,
+    DWVW_16,
+    DWVW_24,
+    DWVW_N,
+    DPCM_8,
+    DPCM_16,
     VORBIS,
     [CCode (cname = "SF_ENDIAN_FILE")]
     ENDIAN_FILE,
@@ -87,7 +87,7 @@ namespace Sndfile {
   }
 
   [CCode (cprefix = "SFC_")]
-  public enum Command { 
+  public enum Command {
     GET_LIB_VERSION,
     GET_LOG_INFO,
     GET_CURRENT_SF_INFO,
@@ -139,8 +139,8 @@ namespace Sndfile {
     SET_ADD_DITHER_ON_READ
   }
 
-  [CCode (cprefix = "SF_STR_")] 
-  public enum String { 
+  [CCode (cprefix = "SF_STR_")]
+  public enum String {
     TITLE,
     COPYRIGHT,
     SOFTWARE,
@@ -156,7 +156,7 @@ namespace Sndfile {
   public const int SF_STR_FIRST;
   public const int SF_STR_LAST;
 
-  [CCode (cprefix = "SFM_")] 
+  [CCode (cprefix = "SFM_")]
   public enum Mode {
     READ,
     WRITE,
@@ -169,8 +169,8 @@ namespace Sndfile {
   public const int SF_AMBISONIC_B_FORMAT;
 
 
-  [CCode (cprefix = "SF_ERR_")] 
-  public enum Error { 
+  [CCode (cprefix = "SF_ERR_")]
+  public enum Error {
     NO_ERROR,
     UNRECOGNISED_FORMAT,
     SYSTEM,
@@ -178,44 +178,44 @@ namespace Sndfile {
     UNSUPPORTED_ENCODING,
   }
 
-  [CCode (cprefix = "SF_CHANNEL_MAP_")] 
+  [CCode (cprefix = "SF_CHANNEL_MAP_")]
   public enum ChannelMap {
     INVALID,
     MONO ,
-    LEFT,  
-    RIGHT,   
-    CENTER,  
+    LEFT,
+    RIGHT,
+    CENTER,
     FRONT_LEFT,
     FRONT_RIGHT,
     FRONT_CENTER,
-    REAR_CENTER,  
-    REAR_LEFT,    
-    REAR_RIGHT,  
-    LFE,         
-    FRONT_LEFT_OF_CENTER,  
+    REAR_CENTER,
+    REAR_LEFT,
+    REAR_RIGHT,
+    LFE,
+    FRONT_LEFT_OF_CENTER,
     FRONT_RIGHT_OF_CENTER,
-    SIDE_LEFT, 
-    SIDE_RIGHT, 
-    TOP_CENTER,    
-    TOP_FRONT_LEFT,      
-    TOP_FRONT_RIGHT,    
-    TOP_FRONT_CENTER,   
-    TOP_REAR_LEFT,     
-    TOP_REAR_RIGHT,    
-    TOP_REAR_CENTER,    
+    SIDE_LEFT,
+    SIDE_RIGHT,
+    TOP_CENTER,
+    TOP_FRONT_LEFT,
+    TOP_FRONT_RIGHT,
+    TOP_FRONT_CENTER,
+    TOP_REAR_LEFT,
+    TOP_REAR_RIGHT,
+    TOP_REAR_CENTER,
     AMBISONIC_B_W,
     AMBISONIC_B_X,
     AMBISONIC_B_Y,
     AMBISONIC_B_Z,
     MAX
-  } 
+  }
 
   [CCode (cname = "sf_count_t")]
   public struct count_t : int {}
-  
+
   [Compact]
   [CCode (cname = "SF_INFO", cprefix = "", destroy_function = "", has_copy_function=false)]
-  public struct Info { 
+  public struct Info {
     count_t  frames ;
     int     samplerate;
     int     channels;
@@ -223,7 +223,7 @@ namespace Sndfile {
     int     sections;
     int     seekable;
   }
-  
+
   [CCode (cname = "SEEK_SET")]
   public const int SEEK_SET;
 
@@ -289,7 +289,7 @@ namespace Sndfile {
 
     public count_t  read_float ([CCode (array_length = false)]float[] ptr, count_t items) ;
     public count_t  write_float([CCode (array_length = false)]float[] ptr, count_t items) ;
-    
+
     public count_t  read_double([CCode (array_length = false)]double[] ptr, count_t items) ;
     public count_t  write_double ([CCode (array_length = false)]double[] ptr, count_t items) ;
 
@@ -303,11 +303,11 @@ namespace Sndfile {
 
   [Compact]
   [CCode (cname = "SF_FORMAT_INFO", cprefix = "", destroy_function = "", has_copy_function=false)]
-  public struct FormatInfo { 
+  public struct FormatInfo {
     int    format ;
     string name ;
     string extension ;
-  } 
+  }
 
   [CCode (cprefix = "SFD_")]
   public enum Dither {
@@ -316,7 +316,7 @@ namespace Sndfile {
     NO_DITHER,
     WHITE,
     TRIANGULAR_PDF
-  } 
+  }
 
 
   [Compact]
@@ -342,12 +342,12 @@ namespace Sndfile {
     ALTERNATING
   }
 
-  public struct Loops { 
+  public struct Loops {
     int mode ;
     uint start ;
     uint end ;
     uint count ;
-  } 
+  }
 
   [Compact]
   [CCode (cname = "SF_INSTRUMENT", cprefix = "", destroy_function = "", has_copy_function=false)]
@@ -369,12 +369,12 @@ namespace Sndfile {
   [Compact]
   [CCode (cname = "SF_LOOP_INFO", cprefix = "", destroy_function = "", has_copy_function=false)]
   public struct LoopInfo {
-    short time_sig_num ; 
-    short time_sig_den ; 
-    int   loop_mode ;  
-    int   num_beats ; 
-    float bpm ;  
-    int root_key ;  
+    short time_sig_num ;
+    short time_sig_den ;
+    int   loop_mode ;
+    int   num_beats ;
+    float bpm ;
+    int root_key ;
     int future [6] ;
   }
 

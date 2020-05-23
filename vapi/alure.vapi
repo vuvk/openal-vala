@@ -121,17 +121,17 @@ namespace Alure
     public bool resume_source(AL.ALuint source);
 
     [CCode (has_target = false)]
-    public delegate void*  OpenFileCallback(string name);
+    public delegate void* OpenFileCallback(string name);
     [CCode (has_target = false)]
-    public delegate void*  OpenMemCallback(AL.ALubyte[] buffer);
+    public delegate void* OpenMemCallback(AL.ALubyte[] buffer);
     [CCode (has_target = false)]
-    public delegate bool   GetFormatCallback(void* instance, out AL.ALenum format, out AL.ALuint samplerate, out AL.ALuint blocksize);
+    public delegate bool GetFormatCallback(void* instance, out AL.ALenum format, out AL.ALuint samplerate, out AL.ALuint blocksize);
     [CCode (has_target = false)]
     public delegate AL.ALuint DecodeCallback(void* instance, [CCode (array_length = false)]AL.ALubyte[] data, AL.ALuint bytes);
     [CCode (has_target = false)]
-    public delegate bool   RewindCallback(void* instance);
+    public delegate bool RewindCallback(void* instance);
     [CCode (has_target = false)]
-    public delegate void   CloseCallback(void* instance);
+    public delegate void CloseCallback(void* instance);
 
     [CCode (cname = "alureInstallDecodeCallbacks")]
     public bool install_decode_callbacks(
@@ -144,7 +144,7 @@ namespace Alure
         CloseCallback     close
     );
 
-    [CCode (cname = "int")]
+    [CCode (cname = "int", has_type_id = false)]
     public enum Seek {
         SET = 0,
         CUR = -1,
@@ -152,13 +152,13 @@ namespace Alure
     }
 
     [CCode (has_target = false)]
-    public delegate void*   OpenCallback(string filename, AL.ALuint mode = 0);
+    public delegate void* OpenCallback(string filename, AL.ALuint mode = 0);
     [CCode (has_target = false)]
     public delegate AL.ALsizei ReadCallback(void* handle, [CCode (array_length = false)] AL.ALubyte[] buf, AL.ALuint bytes);
     [CCode (has_target = false)]
     public delegate AL.ALsizei WriteCallback(void* handle, [CCode (array_length = false)] AL.ALubyte[] buf, AL.ALuint bytes);
     [CCode (has_target = false)]
-    public delegate int64   SeekCallback(void* handle, int64 offset, int whence);
+    public delegate int64 SeekCallback(void* handle, int64 offset, int whence);
 
     [CCode (cname = "alureSetIOCallbacks")]
     public bool set_io_callbacks(
