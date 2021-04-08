@@ -4,7 +4,7 @@ public class AlurePlay {
     private static AL.Source src;
     private static AL.Buffer buf;
 
-    static void eos_callback(void* unused, AL.ALuint unused2) {
+    static void eos_callback(void* unused, AL.Uint unused2) {
         quit = true;
         print("Bye-bye!\n");
     }
@@ -46,7 +46,7 @@ public class AlurePlay {
             return 1;
         }
 
-        src.set_parami(AL.BUFFER, (AL.ALint)buf);
+        src.set_parami(AL.BUFFER, (AL.Int)buf);
         if (!Alure.play_source(src, eos_callback)) {
             stderr.printf("Failed to start source!\n");
             free_resources();

@@ -9,7 +9,7 @@ public class AlurePhysfsStream {
     private const string ARCHIVE_NAME = "../samples/assets.7z";
     private const string FILE_NAME = "example.wav";
 
-    static void* open_callback(string filename, AL.ALuint mode = 0) {
+    static void* open_callback(string filename, AL.Uint mode = 0) {
         if (!PHYSFS.exists(filename))
             return null;
 
@@ -22,23 +22,23 @@ public class AlurePhysfsStream {
         }
     }
 
-    static AL.ALsizei read_callback(void* handle, [CCode (array_length = false)] AL.ALubyte[] buffer, AL.ALuint bytes) {
+    static AL.Sizei read_callback(void* handle, [CCode (array_length = false)] AL.Ubyte[] buffer, AL.Uint bytes) {
         if (handle == null) {
             return -1;
         }
 
-        return (AL.ALsizei) ((PHYSFS.File)handle).read(buffer, 1, bytes);
+        return (AL.Sizei) ((PHYSFS.File)handle).read(buffer, 1, bytes);
     }
 
-    static AL.ALsizei write_callback(void* handle, [CCode (array_length = false)] AL.ALubyte[] buffer, AL.ALuint bytes) {
+    static AL.Sizei write_callback(void* handle, [CCode (array_length = false)] AL.Ubyte[] buffer, AL.Uint bytes) {
         if (handle == null) {
             return -1;
         }
 
-        return (AL.ALsizei) ((PHYSFS.File)handle).write(buffer, 1, bytes);
+        return (AL.Sizei) ((PHYSFS.File)handle).write(buffer, 1, bytes);
     }
 
-    static int64 seek_callback(void* handle, int64 offset, int whence) {
+    static int64 seek_callback(void* handle, int64 offset, Alure.Seek whence) {
         if (handle == null) {
             return -1;
         }
@@ -67,7 +67,7 @@ public class AlurePhysfsStream {
         return offset;
     }
 
-    static void eos_callback(void* unused, AL.ALuint unused2) {
+    static void eos_callback(void* unused, AL.Uint unused2) {
         quit = true;
         print("Bye-bye!\n");
     }

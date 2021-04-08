@@ -17,7 +17,7 @@ public class AlureStereo {
     }
 
     // callback for repeat sound
-    static void eos_callback(void* userdata, AL.ALuint source) {
+    static void eos_callback(void* userdata, AL.Uint source) {
         Alure.stop_source(source, false);
 
         unowned Alure.Stream stream = (Alure.Stream)userdata;
@@ -49,8 +49,8 @@ public class AlureStereo {
             return 1;
         }
 
-        AL.ALfloat[] position = { 0, 0, -1 };
-        AL.ALfloat angle = 0.0f;
+        AL.Float[] position = { 0, 0, -1 };
+        AL.Float angle = 0.0f;
 
         AL.gen_source(1, out src);
         if (AL.get_error() != AL.Error.NO_ERROR) {

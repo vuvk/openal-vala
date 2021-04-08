@@ -67,8 +67,6 @@ public class StreamPlayer {
     /* Opens the first audio stream of the named file. If a file is already open,
      * it will be closed first. */
     public bool open_file(string filename) {
-        size_t frame_size;
-
         close_file();
 
         /* Open the audio file and check that it's usable. */
@@ -114,7 +112,7 @@ public class StreamPlayer {
             }
 
             slen *= (int) (sfinfo.channels * sizeof(short));
-            buffers[i].set_data(format, (uint8[])membuf, (AL.ALsizei)slen, sfinfo.samplerate);
+            buffers[i].set_data(format, (uint8[])membuf, (AL.Sizei)slen, sfinfo.samplerate);
         }
 
         if (AL.get_error() != AL.Error.NO_ERROR) {
@@ -135,10 +133,10 @@ public class StreamPlayer {
 
     public bool update() {
         AL.SourceState state;
-        AL.ALint processed;
+        AL.Int processed;
 
         /* Get relevant source info */
-        AL.ALint param;
+        AL.Int param;
         source.get_parami(AL.SOURCE_STATE, out param);
         state = (AL.SourceState)param;
         source.get_parami(AL.BUFFERS_PROCESSED, out processed);
@@ -162,7 +160,7 @@ public class StreamPlayer {
             slen = sndfile.readf_short(membuf, BUFFER_SAMPLES);
             if (slen > 0) {
                 slen *= (int) (sfinfo.channels * sizeof(short));
-                bufid.set_data(format, (uint8[])membuf, (AL.ALsizei)slen, sfinfo.samplerate);
+                bufid.set_data(format, (uint8[])membuf, (AL.Sizei)slen, sfinfo.samplerate);
                 source.queue_buffer(1, ref bufid);
             }
 
@@ -175,7 +173,7 @@ public class StreamPlayer {
 
         /* Make sure the source hasn't underrun */
         if (state != AL.SourceState.PLAYING && state != AL.SourceState.PAUSED) {
-            AL.ALint queued;
+            AL.Int queued;
 
             /* If no buffers are queued, playback is finished */
             source.get_parami(AL.BUFFERS_QUEUED, out queued);

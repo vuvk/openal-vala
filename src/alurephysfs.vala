@@ -9,7 +9,7 @@ public class AlurePhysfs {
     private const string ARCHIVE_NAME = "../samples/assets.7z";
     private const string FILE_NAME = "example.wav";
 
-    static void eos_callback(void* unused, AL.ALuint unused2) {
+    static void eos_callback(void* unused, AL.Uint unused2) {
         quit = true;
         print("Bye-bye!\n");
     }

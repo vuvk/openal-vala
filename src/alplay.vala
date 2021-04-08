@@ -14,7 +14,7 @@ ALC.Context ctx;
 /* LoadBuffer loads the named audio file into an OpenAL buffer object, and
  * returns the new buffer ID.
  */
-AL.ALuint load_sound(string filename) {
+AL.Uint load_sound(string filename) {
     AL.Error err;
     AL.BufferFormat format;
     AL.Buffer buffer;
@@ -22,7 +22,7 @@ AL.ALuint load_sound(string filename) {
     Sndfile.Info sfinfo = {};
     short[] membuf;
     int num_frames;
-    AL.ALsizei num_bytes;
+    AL.Sizei num_bytes;
 
     /* Open the audio file and check that it's usable. */
     sndfile = new Sndfile.File(filename, Sndfile.Mode.READ, ref sfinfo);
@@ -53,7 +53,7 @@ AL.ALuint load_sound(string filename) {
         stderr.printf("Failed to read samples in $filename: ($num_frames)\n");
         return 0;
     }
-    num_bytes = (AL.ALsizei)(num_frames * sfinfo.channels) * (AL.ALsizei)sizeof(short);
+    num_bytes = (AL.Sizei)(num_frames * sfinfo.channels) * (AL.Sizei)sizeof(short);
 
     /* Buffer the audio data into a new buffer object, then free the data and
      * close the file.
@@ -123,7 +123,7 @@ void close_openal() {
 int main(string[] args) {
     AL.Source source;
     AL.Buffer buffer;
-    AL.ALfloat offset;
+    AL.Float offset;
     AL.SourceState state = AL.SourceState.STOPPED;
 
     /* Print out usage if no arguments were specified */
@@ -146,7 +146,7 @@ int main(string[] args) {
 
     /* Create the source to play the sound with. */
     AL.gen_source(1, out source);
-    source.set_parami(AL.BUFFER, (AL.ALint)buffer);
+    source.set_parami(AL.BUFFER, (AL.Int)buffer);
     if (AL.get_error() != AL.Error.NO_ERROR) {
         print("Failed to setup sound source\n");
         return 1;
@@ -156,7 +156,7 @@ int main(string[] args) {
     source.play();
     do {
         Thread.usleep(10000);
-        AL.ALint param;
+        AL.Int param;
         source.get_parami(AL.SOURCE_STATE, out param);
         state = (AL.SourceState)param;
 

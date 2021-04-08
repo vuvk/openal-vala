@@ -7,7 +7,7 @@ public class AlureStream {
     private const int CHUNK_LENGTH = 128000;
     private const int NUM_BUFS = 3;
 
-    static void eos_callback(void* unused, AL.ALuint unused2) {
+    static void eos_callback(void* unused, AL.Uint unused2) {
         quit = true;
         print("Bye-bye!\n");
     }
