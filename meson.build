@@ -10,6 +10,7 @@ al_dependencies = [
 alure_dependencies = [
     al_dependencies,
     dependency('alure'),
+    dependency('physfs')
 ]
 
 cc = meson.get_compiler('c')
@@ -20,9 +21,9 @@ add_project_arguments(['--vapidir', vapi_dir], language: 'vala')
 
 executable('alureplay',         'src/alureplay.vala',         dependencies: alure_dependencies)
 executable('alurestream',       'src/alurestream.vala',       dependencies: alure_dependencies)
-executable('alurephysfs',       'src/alurephysfs.vala',       dependencies: [alure_dependencies, dependency('physfs')])
-executable('alurephysfsstream', 'src/alurephysfsstream.vala', dependencies: [alure_dependencies, dependency('physfs')])
-executable('alurestereo',       'src/alurestereo.vala',       dependencies: [alure_dependencies, dependency('physfs'), m_dep])
+executable('alurephysfs',       'src/alurephysfs.vala',       dependencies: alure_dependencies)
+executable('alurephysfsstream', 'src/alurephysfsstream.vala', dependencies: alure_dependencies)
+executable('alurestereo',       'src/alurestereo.vala',       dependencies: [alure_dependencies, m_dep])
 
 executable('alplay',   'src/alplay.vala',   dependencies: al_dependencies)
 executable('alstream', 'src/alstream.vala', dependencies: al_dependencies)
