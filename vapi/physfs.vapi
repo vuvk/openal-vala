@@ -60,7 +60,7 @@ namespace PHYSFS
 	* Initialize the PhysicsFS library.
 	*/
 	[CCode (cname = "PHYSFS_init")]
-	public bool init (string argv0);
+	public bool init (string? argv0);
 
 	/**
 	* int PHYSFS_deinit ()

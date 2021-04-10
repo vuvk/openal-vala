@@ -117,7 +117,7 @@ public class AlurePhysfsStream {
             return 1;
         }
 
-        if (!PHYSFS.init(args[0])) {
+        if (!PHYSFS.init(null/*args[0]*/)) {
             stderr.printf("Failed to initialize PHYSFS: %s\n", get_physfs_error());
             free_resources();
             return 1;
