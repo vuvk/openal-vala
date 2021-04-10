@@ -102,7 +102,7 @@ namespace PHYSFS
 	* Enable or disable following of symbolic links.
 	*/
 	[CCode (cname = "PHYSFS_permitSymbolicLinks")]
-	public void permit_symbolic_links (int allow);
+	public void permit_symbolic_links (bool allow);
 
 	/**
 	* char **PHYSFS_getCdRomDirs ()
@@ -167,11 +167,7 @@ namespace PHYSFS
 	* Set up sane, default paths.
 	*/
 	[CCode (cname = "PHYSFS_setSaneConfig")]
-	public bool set_sane_config (string organization,
-								string app_name,
-								string archive_ext,
-								bool include_cdroms,
-								bool archives_first);
+	public bool set_sane_config (string organization, string app_name, string archive_ext, bool include_cdroms, bool archives_first);
 
 	/* Directory management stuff ... */
 
@@ -222,7 +218,7 @@ namespace PHYSFS
 	* Determine if a file in the search path is really a symbolic link.
 	*/
 	[CCode (cname = "PHYSFS_isSymbolicLink")]
-	public bool is_symbolic_link (string fname) ;
+	public bool is_symbolic_link (string fname);
 
 	/**
 	* int64 PHYSFS_getLastModTime (const char *filename)
@@ -235,9 +231,6 @@ namespace PHYSFS
 
 	[Compact]
 	[CCode (cname = "PHYSFS_File", has_type_id = false, free_function = "PHYSFS_close")]
-	//public struct File {
-	//	private void* opaque; /**< That's all you get. Don't touch. */
-	//}
 	public class File {
 		/**
 		* File* PHYSFS_openWrite (const char *filename)
@@ -622,13 +615,13 @@ namespace PHYSFS
 	public bool symbolic_links_permitted ();
 
 	[CCode (has_target = false)]
-	public delegate int Init (); /**< Initialize. Can be NULL. Zero on failure. */
+	public delegate int InitFunc (); /**< Initialize. Can be NULL. Zero on failure. */
 	[CCode (has_target = false)]
-	public delegate void Deinit (); /**< Deinitialize your allocator. Can be NULL. */
+	public delegate void DeinitFunc (); /**< Deinitialize your allocator. Can be NULL. */
 	[CCode (has_target = false)]
-	public delegate void* Malloc (uint64 size); /**< Allocate like malloc (). */
-	public delegate void* Realloc (void* dst, uint64 size); /**< Reallocate like realloc (). */
-	public delegate void Free (void* pointer); /**< Free memory from Malloc or Realloc. */
+	public delegate void* MallocFunc (uint64 size); /**< Allocate like malloc (). */
+	public delegate void* ReallocFunc (void* dst, uint64 size); /**< Reallocate like realloc (). */
+	public delegate void FreeFunc (void* pointer); /**< Free memory from Malloc or Realloc. */
 	/**
 	* PHYSFS_Allocator
 	* PhysicsFS allocation function pointers.
@@ -636,15 +629,15 @@ namespace PHYSFS
 	[CCode (cname = "PHYSFS_Allocator", has_type_id = false)]
 	public struct Allocator {
 		[CCode (cname = "init")]
-		public Init init_func;	/**< Initialize. Can be NULL. Zero on failure. */
+		public InitFunc init_func;	/**< Initialize. Can be NULL. Zero on failure. */
 		[CCode (cname = "deinit")]
-		public Deinit deinit_func; /**< Deinitialize your allocator. Can be NULL. */
+		public DeinitFunc deinit_func; /**< Deinitialize your allocator. Can be NULL. */
 		[CCode (cname = "malloc")]
-		public Malloc malloc_func; /**< Allocate like malloc (). */
+		public MallocFunc malloc_func; /**< Allocate like malloc (). */
 		[CCode (cname = "realloc")]
-		public Realloc realloc_func; /**< Reallocate like realloc (). */
+		public ReallocFunc realloc_func; /**< Reallocate like realloc (). */
 		[CCode (cname = "free")]
-		public Free free_func;		/**< Free memory from Malloc or Realloc. */
+		public FreeFunc free_func;		/**< Free memory from Malloc or Realloc. */
 	}
 
 	/**
@@ -700,7 +693,7 @@ namespace PHYSFS
 	* Get a file listing of a search path's directory, using an application-defined callback.
 	*/
 	[CCode (cname = "PHYSFS_enumerateFilesCallback")]
-	public void enumerate_files_callback (string dir, EnumFilesCallback c, void* d) ;
+	public void enumerate_files_callback (string dir, EnumFilesCallback c, void* d);
 
 	/**
 	* void PHYSFS_utf8FromUcs4 (const uint32 *src, char *dst, uint64 len)
@@ -852,14 +845,14 @@ namespace PHYSFS
 	[CCode (cname = "PHYSFS_utf8ToUtf16")]
 	public void utf8ToUtf16 (string src, [CCode (array_length = false)] uint16[] dst, uint64 len);
 
-	public delegate int64 IoRead (Io* io, void* buf, uint64 len);
-	public delegate int64 IoWrite (Io *io, void* buffer, uint64 len);
-	public delegate bool IoSeek (Io *io, uint64 offset);
-	public delegate int64 IoTell (Io *io);
-	public delegate int64 IoLength (Io *io);
-	public delegate Io* IoDuplicate (Io *io);
-	public delegate bool IoFlush (Io *io);
-	public delegate void IoDestroy (Io *io);
+	public delegate int64 IoReadFunc (Io* io, void* buf, uint64 len);
+	public delegate int64 IoWriteFunc (Io *io, void* buffer, uint64 len);
+	public delegate bool IoSeekFunc (Io *io, uint64 offset);
+	public delegate int64 IoTellFunc (Io *io);
+	public delegate int64 IoLengthFunc (Io *io);
+	public delegate Io* IoDuplicateFunc (Io *io);
+	public delegate bool IoFlushFunc (Io *io);
+	public delegate void IoDestroyFunc (Io *io);
 
 	/**
 	* PHYSFS_Io
@@ -881,49 +874,49 @@ namespace PHYSFS
 		* Read more data.
 		*/
 		[CCode (cname = "read")]
-		public IoRead read_func;
+		public IoReadFunc read_func;
 
 		/**
 		* Write more data.
 		*/
 		[CCode (cname = "write")]
-		public IoWrite write_func;
+		public IoWriteFunc write_func;
 
 		/**
 		* Move i/o position to a given byte offset from start.
 		*/
 		[CCode (cname = "seek")]
-		public IoSeek seek_func;
+		public IoSeekFunc seek_func;
 
 		/**
 		* Report current i/o position.
 		*/
 		[CCode (cname = "tell")]
-		public IoTell tell_func;
+		public IoTellFunc tell_func;
 
 		/**
 		* Determine size of the i/o instance's dataset.
 		*/
 		[CCode (cname = "length")]
-		public IoLength length_func;
+		public IoLengthFunc length_func;
 
 		/**
 		* Duplicate this i/o instance.
 		*/
 		[CCode (cname = "duplicate")]
-		public IoDuplicate duplicate_func;
+		public IoDuplicateFunc duplicate_func;
 
 		/**
 		* Flush resources to media, or wherever.
 		*/
 		[CCode (cname = "flush")]
-		public IoFlush flush_func;
+		public IoFlushFunc flush_func;
 
 		/**
 		* Cleanup and deallocate i/o instance.
 		*/
 		[CCode (cname = "destroy")]
-		public IoDestroy destroy_func;
+		public IoDestroyFunc destroy_func;
 	}
 
 	/**
@@ -948,18 +941,18 @@ namespace PHYSFS
 	*/
 	[CCode (cprefix = "PHYSFS_ERR_", cname = "int", has_type_id = false)]
 	public enum ErrorCode {
-		OK,			/**< Success; no error.					*/
+		OK,		/**< Success; no error.					*/
 		OTHER_ERROR,	/**< Error not otherwise covered here.	*/
 		OUT_OF_MEMORY,	/**< Memory allocation failed.			*/
 		NOT_INITIALIZED, /**< PhysicsFS is not initialized.		*/
 		IS_INITIALIZED, /**< PhysicsFS is already initialized.	*/
 		ARGV0_IS_NULL,	/**< Needed argv[0], but it is NULL.	*/
 		UNSUPPORTED,	/**< Operation or feature unsupported.	*/
-		PAST_EOF,		/**< Attempted to access past end of file. */
-		FILES_STILL_OPEN, /**< Files still open.					*/
+		PAST_EOF,	/**< Attempted to access past end of file. */
+		FILES_STILL_OPEN, /**< Files still open. */
 		INVALID_ARGUMENT, /**< Bad parameter passed to an function. */
 		NOT_MOUNTED,	/**< Requested archive/dir not mounted.	*/
-		NOT_FOUND,		/**< File (or whatever) not found.		*/
+		NOT_FOUND,	/**< File (or whatever) not found.	*/
 		SYMLINK_FORBIDDEN,/**< Symlink seen when not permitted.	*/
 		NO_WRITE_DIR,	/**< No write dir has been specified.	*/
 		OPEN_FOR_READING, /**< Wrote to a file opened for reading. */
@@ -1008,15 +1001,15 @@ namespace PHYSFS
 	[CCode (cname = "PHYSFS_getPrefDir")]
 	public unowned string? get_pref_dir (string org, string app);
 
-	public delegate void* ArchiverOpenArchive (Io* io, string name, bool for_write, int* claimed);
-	public delegate EnumerateCallbackResult ArchiverEnumerate (void* opaque, string dirname, EnumerateCallback cb, string origdir, void* callbackdata);
-	public delegate Io* ArchiverOpenRead (void* opaque, string fnm);
-	public delegate Io* ArchiverOpenWrite (void* opaque, string filename);
-	public delegate Io* ArchiverOpenAppend (void* opaque, string filename);
-	public delegate bool ArchiverRemove (void* opaque, string filename);
-	public delegate bool ArchiverMkdir (void* opaque, string filename);
-	public delegate bool ArchiverStat (void* opaque, string fn, out Stat stat);
-	public delegate void ArchiverCloseArchive (void* opaque);
+	public delegate void* ArchiverOpenArchiveFunc (Io* io, string name, bool for_write, int* claimed);
+	public delegate EnumerateCallbackResult ArchiverEnumerateFunc (void* opaque, string dirname, EnumerateCallback cb, string origdir, void* callbackdata);
+	public delegate Io* ArchiverOpenReadFunc (void* opaque, string fnm);
+	public delegate Io* ArchiverOpenWriteFunc (void* opaque, string filename);
+	public delegate Io* ArchiverOpenAppendFunc (void* opaque, string filename);
+	public delegate bool ArchiverRemoveFunc (void* opaque, string filename);
+	public delegate bool ArchiverMkdirFunc (void* opaque, string filename);
+	public delegate bool ArchiverStatFunc (void* opaque, string fn, out Stat stat);
+	public delegate void ArchiverCloseArchiveFunc (void* opaque);
 	/**
 	* PHYSFS_Archiver
 	* Abstract interface to provide support for user-defined archives.
@@ -1037,55 +1030,55 @@ namespace PHYSFS
 		* Open an archive provided by (io).
 		*/
 		[CCode (cname = "openArchive")]
-		public ArchiverOpenArchive open_archive_func;
+		public ArchiverOpenArchiveFunc open_archive_func;
 
 		/**
 		* List all files in (dirname).
 		*/
 		[CCode (cname = "enumerate")]
-		public ArchiverEnumerate enumerate_func;
+		public ArchiverEnumerateFunc enumerate_func;
 
 		/**
 		* Open a file in this archive for reading.
 		*/
 		[CCode (cname = "openRead")]
-		public ArchiverOpenRead open_read_func;
+		public ArchiverOpenReadFunc open_read_func;
 
 		/**
 		* Open a file in this archive for writing.
 		*/
 		[CCode (cname = "openWrite")]
-		public ArchiverOpenWrite open_write_func;
+		public ArchiverOpenWriteFunc open_write_func;
 
 		/**
 		* Open a file in this archive for appending.
 		*/
 		[CCode (cname = "openAppend")]
-		public ArchiverOpenAppend open_append_func;
+		public ArchiverOpenAppendFunc open_append_func;
 
 		/**
 		* Delete a file or directory in the archive.
 		*/
 		[CCode (cname = "remove")]
-		public ArchiverRemove remove_func;
+		public ArchiverRemoveFunc remove_func;
 
 		/**
 		* Create a directory in the archive.
 		*/
 		[CCode (cname = "mkdir")]
-		public ArchiverMkdir mkdir_func;
+		public ArchiverMkdirFunc mkdir_func;
 
 		/**
 		* Obtain basic file metadata.
 		*/
 		[CCode (cname = "stat")]
-		public ArchiverStat stat_func;
+		public ArchiverStatFunc stat_func;
 
 		/**
 		* Destruct a previously-opened archive.
 		*/
 		[CCode (cname = "closeArchive")]
-		public ArchiverCloseArchive close_archive_func;
+		public ArchiverCloseArchiveFunc close_archive_func;
 	}
 
 	/**
