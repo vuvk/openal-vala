@@ -25,6 +25,67 @@
 namespace PHYSFS
 {
 	/**
+	* \typedef PHYSFS_uint8
+	* \brief An unsigned, 8-bit integer type.
+	*/
+	[CCode (cname = "PHYSFS_uint8", has_type_id = false)]
+	public struct Uint8 : uint8 {}
+
+	/**
+	* \typedef PHYSFS_sint8
+	* \brief A signed, 8-bit integer type.
+	*/
+	[CCode (cname = "PHYSFS_sint8", has_type_id = false)]
+	public struct Sint8 : int8 {}
+
+	/**
+	* \typedef PHYSFS_uint16
+	* \brief An unsigned, 16-bit integer type.
+	*/
+	[CCode (cname = "PHYSFS_uint16", has_type_id = false)]
+	public struct Uint16 : uint16 {}
+
+	/**
+	* \typedef PHYSFS_sint16
+	* \brief A signed, 16-bit integer type.
+	*/
+	[CCode (cname = "PHYSFS_sint16", has_type_id = false)]
+	public struct Sint16 : int16 {}
+
+	/**
+	* \typedef PHYSFS_uint32
+	* \brief An unsigned, 32-bit integer type.
+	*/
+	[CCode (cname = "PHYSFS_uint32", has_type_id = false)]
+	public struct Uint32 : uint32 {}
+
+	/**
+	* \typedef PHYSFS_sint32
+	* \brief A signed, 32-bit integer type.
+	*/
+	[CCode (cname = "PHYSFS_sint32", has_type_id = false)]
+	public struct Sint32 : int32 {}
+
+	/**
+	* \typedef PHYSFS_uint64
+	* \brief An unsigned, 64-bit integer type.
+	* \warning on platforms without any sort of 64-bit datatype, this is
+	* equivalent to PHYSFS_uint32!
+	*/
+	[CCode (cname = "PHYSFS_uint64", has_type_id = false)]
+	public struct Uint64 : uint {}
+
+	/**
+	* \typedef PHYSFS_sint64
+	* \brief A signed, 64-bit integer type.
+	* \warning on platforms without any sort of 64-bit datatype, this is
+	* equivalent to PHYSFS_sint32!
+	*/
+	[CCode (cname = "PHYSFS_sint64", has_type_id = false)]
+	public struct Sint64 : int {}
+
+
+	/**
 	* PHYSFS_ArchiveInfo
 	* Information on various PhysicsFS-supported archives.
 	*/
