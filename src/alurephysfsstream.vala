@@ -59,12 +59,12 @@ public class AlurePhysfsStream {
         }
 
         /* return -1 if error */
-        if (file.seek(offset) == 0) {
+        if (file.seek((PHYSFS.Uint64) offset) == 0) {
             return -1;
         }
 
         /* return new pos */
-        return offset;
+        return (int64) offset;
     }
 
     static void eos_callback(void* unused, AL.Uint unused2) {

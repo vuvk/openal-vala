@@ -71,7 +71,7 @@ public class AlurePhysfs {
         }
         int64 len = wav.length();
         uint8[] buffer = new uint8[len];
-        if (wav.read_bytes(buffer, len) != len) {
+        if (wav.read_bytes(buffer, (PHYSFS.Uint64) len) != len) {
             stderr.printf("Error when read file: %s\n", get_physfs_error());
             free_resources();
             return 1;
